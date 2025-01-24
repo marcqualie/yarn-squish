@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "@types/semver": "^7.5.8",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.4"
+    "typescript": "*",
+    "vitest": "*"
   },
   "main": "dist/index.js",
   "files": [
