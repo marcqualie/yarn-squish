@@ -1,0 +1,30 @@
+{
+  "name": "@yarn-squish/web",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "lint": "eslint src/**/*"
+  },
+  "dependencies": {
+    "@carbon/icons-react": "^11.55.0",
+    "@yarn-squish/core": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@tailwindcss/vite": "^4.0.6",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.1",
+    "tailwindcss": "^4.0.6",
+    "vite": "^6.1.0"
+  }
+}
