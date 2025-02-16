@@ -4,14 +4,21 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "lint": "eslint src/**/*",
     "test": "vitest run"
   },
   "dependencies": {
     "semver": "^7.7.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@types/semver": "^7.5.8",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.15.0",
     "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0",
     "vitest": "^3.0.5"
   },
   "main": "dist/index.js",
