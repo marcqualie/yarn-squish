@@ -2,14 +2,20 @@
   "compilerOptions": {
     "target": "es2020",
     "lib": [
-      "es2020"
+      "es2020",
+      "DOM",
+      "DOM.Iterable"
     ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "module": "ESNext",
     "moduleResolution": "node",
+    "isolatedModules": true,
     "skipLibCheck": true,
     "strict": true,
     "declaration": true,
     "outDir": "dist",
+    "jsx": "react-jsx",
     "types": [
       "vitest/globals"
     ]

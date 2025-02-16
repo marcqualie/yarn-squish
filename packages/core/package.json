@@ -12,7 +12,7 @@
   "devDependencies": {
     "@types/semver": "^7.5.8",
     "typescript": "^5.7.3",
-    "vitest": "^2.1.9"
+    "vitest": "^3.0.5"
   },
   "main": "dist/index.js",
   "files": [
