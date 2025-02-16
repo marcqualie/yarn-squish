@@ -1,16 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-
 import { ParsedYarnLock, parseYarnLockContent } from '@yarn-squish/core'
 
 export interface YarnLockState {
-  setPath: (path: string | undefined) => Promise<void>
-  reloadSource: () => Promise<void>
-
-  path?: string
   source?: string
-  setSource: (source: string) => void
-  parsed?: ParsedYarnLock
+  sourceParsed?: ParsedYarnLock
+  setSource: (source: string | undefined) => void
+
+  openYarnLock: () => Promise<void>
+  saveYarnLock: (source: string) => Promise<void>
 
   queuedVersionsForRemoval?: Record<string, string[]>
   queueVersionForRemoval: (dependency: string, version: string) => void
@@ -21,25 +19,49 @@ export interface YarnLockState {
 export const useYarnLockStore = create<YarnLockState>()(
   persist(
     (set, get) => ({
-      setSource: async (source: string) => {
+      setSource: async (source: string | undefined) => {
         set({ source })
-        const parsed = parseYarnLockContent(source, { optimise: true })
-        set({ parsed })
+        const sourceParsed = source
+          ? parseYarnLockContent(source, { optimise: true })
+          : undefined
+        set({ sourceParsed })
       },
 
-      /**
-       * Set yarn.lock path and load the source if the file exists.
-       */
-      setPath: async (path) => {
-        set({ path })
+      openYarnLock: async () => {
+        const [file] = await window.showOpenFilePicker({
+          id: 'yarn-squish',
+          types: [
+            {
+              description: 'Yarn Lock',
+              accept: {
+                'text/plain': ['.lock'],
+              },
+            },
+          ],
+        })
+        const content = await file.getFile()
+        const source = await content.text()
+        get().setSource(source)
       },
 
-      /**
-       * Reload the source from the current path.
-       */
-      reloadSource: async () => {
-        const state = get()
-        await state.setPath(state.path)
+      saveYarnLock: async (source) => {
+        const file = await window.showSaveFilePicker({
+          id: 'yarn-squish',
+          suggestedName: 'yarn.lock',
+          types: [
+            {
+              description: 'Yarn Lock',
+              accept: {
+                'text/plain': ['.lock'],
+              },
+            },
+          ],
+        })
+
+        // Create a FileSystemWritableFileStream to write to.
+        const writable = await file.createWritable()
+        await writable.write(source)
+        await writable.close()
       },
 
       queueVersionForRemoval: (dependency, version) =>
@@ -77,5 +99,5 @@ export const useYarnLockStore = create<YarnLockState>()(
     {
       name: 'yarn-squish',
     },
-  )
+  ),
 )

@@ -1,5 +1,10 @@
 import React from 'react'
-import { Application, CloseOutline, Flash, Renew } from '@carbon/icons-react'
+import {
+  Application,
+  CloseOutline,
+  DocumentView,
+  Flash,
+} from '@carbon/icons-react'
 
 import Flex from '../Flex'
 import { useYarnLockStore } from '../../stores/yarnLock'
@@ -11,15 +16,14 @@ import { useApplyQueuedChanges } from '../../hooks/useApplyQueuedChanges'
 import FullAppSpinner from '../FullAppSpinner'
 
 const Header: React.FC = () => {
-  const path = useYarnLockStore((state) => state.path || '')
-  const setPath = useYarnLockStore((state) => state.setPath)
   const source = useYarnLockStore((state) => state.source)
-  const parsed = useYarnLockStore((state) => state.parsed)
-  const reloadSource = useYarnLockStore((state) => state.reloadSource)
+  const sourceParsed = useYarnLockStore((state) => state.sourceParsed)
+  const setSource = useYarnLockStore((state) => state.setSource)
+  const openYarnLock = useYarnLockStore((state) => state.openYarnLock)
   const numberFormat = useNumberFormat()
   const fileSize = Math.ceil((source?.length || 0) / 1000)
   const totalResolvedVersions = Object.values(
-    parsed?.dependencies || {},
+    sourceParsed?.dependencies || {},
   ).reduce((acc, { versions }) => acc + Object.keys(versions).length, 0)
   const { selectedTab, setSelectedTab } = useTabsStore()
   const queuedVersionsForRemoval = useYarnLockStore(
@@ -71,14 +75,14 @@ const Header: React.FC = () => {
               </span>
             </Button>
           )}
-          <Renew
+          <DocumentView
             size={20}
-            onClick={() => reloadSource()}
+            onClick={() => openYarnLock()}
             className='cursor-pointer'
           />
           <CloseOutline
             size={20}
-            onClick={() => setPath(undefined)}
+            onClick={() => setSource(undefined)}
             className='cursor-pointer'
           />
         </Flex>

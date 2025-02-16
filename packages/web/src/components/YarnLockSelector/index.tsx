@@ -7,23 +7,7 @@ import { useYarnLockStore } from '../../stores/yarnLock'
 import type { FC } from 'react'
 
 export const YarnLockSelector: FC = () => {
-  const { setSource } = useYarnLockStore()
-
-  const openYarnLock = async () => {
-    const [file] = await window.showOpenFilePicker({
-      id: 'yarn-squish',
-      types: [
-        {
-          description: 'Yarn Lock',
-          accept: {
-            'text/plain': ['.lock'],
-          }
-        }
-      ]
-    })
-    const content = await file.getFile()
-    setSource(await content.text())
-  }
+  const openYarnLock = useYarnLockStore((state) => state.openYarnLock)
 
   return (
     <Flex
@@ -47,9 +31,7 @@ export const YarnLockSelector: FC = () => {
 
         <br />
 
-        <span className='text-gray-400 text-xs'>
-          v0.1.0 by Marc Qualie
-        </span>
+        <span className='text-gray-400 text-xs'>v0.1.0 by Marc Qualie</span>
       </Flex>
     </Flex>
   )

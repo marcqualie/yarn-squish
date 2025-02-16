@@ -6,7 +6,7 @@ import TextInput from '../TextInput'
 import { useClassNames } from '../../hooks/useClassNames'
 
 const DependenciesTab: React.FC = () => {
-  const parsed = useYarnLockStore((state) => state.parsed)
+  const sourceParsed = useYarnLockStore((state) => state.sourceParsed)
   const queueVersionForRemoval = useYarnLockStore(
     (state) => state.queueVersionForRemoval,
   )
@@ -21,7 +21,9 @@ const DependenciesTab: React.FC = () => {
   )
   const classNames = useClassNames()
 
-  const sortedDependencyList = Object.entries(parsed?.dependencies || {})
+  console.log('<DependenciesTab />', sourceParsed)
+
+  const sortedDependencyList = Object.entries(sourceParsed?.dependencies || {})
     .filter(([name]) => name.toLowerCase().includes(searchTerm.toLowerCase()))
     .map(([name, dependency]) => ({
       name,
@@ -83,9 +85,11 @@ const DependenciesTab: React.FC = () => {
                       )}
                       onClick={() => {
                         if (!canBeRemoved) return
-                        queuedToBeRemoved
-                          ? unqueueVersionForRemoval(name, version)
-                          : queueVersionForRemoval(name, version)
+                        if (queuedToBeRemoved) {
+                          unqueueVersionForRemoval(name, version)
+                        } else {
+                          queueVersionForRemoval(name, version)
+                        }
                       }}
                     >
                       {version}
